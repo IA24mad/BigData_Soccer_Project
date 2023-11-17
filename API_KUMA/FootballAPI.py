@@ -63,4 +63,16 @@ class FootballAPI:
         querystring = {"season": str(season), "league": str(league)}
         response = requests.get(url, headers=self.headers, params=querystring)
         return response.json()
+    
+    #testing area :
+
+    def get_leagues_test(self):
+        url = f"{self.base_url}/leagues"
+        response = requests.get(url, headers=self.headers)
+        # Extract only the 'league' column from the JSON response
+        leagues = [entry['league'] for entry in response.json()['response']]
+        return leagues
+
+   # def save_csv_fixtures(self, Seasons, league):
+
         
