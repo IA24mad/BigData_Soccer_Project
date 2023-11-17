@@ -12,30 +12,45 @@ class FootballAPIClient:
             "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
         }
 
-
+    # DONE
     def get_seasons(self):
         url = f"{self.base_url}/leagues/seasons"
         response = requests.get(url, headers=self.headers)
         return response.json()['response']
 
-        
+    # DONE  
     def get_leagues(self):
         url = f"{self.base_url}/leagues"
         response = requests.get(url, headers=self.headers)
         # Extract only the 'league' column from the JSON response
         league_column = [entry['league'] for entry in response.json()['response']]
-        return league_column
+        league = pd.json_normalize(league_column, max_level=9)
+        leagues = pd.DataFrame(league)
+        return leagues
     
+
+    def get_fixtures_statistics(self, fixture_id, team=None):
+        url = f"{self.base_url}/fixtures/statistics"
+        querystring = {"fixture": str(fixture_id)}
+
+        # Add team to the query if provided
+        if team is not None:
+            querystring["team"] = str(team)
+
+        response = requests.get(url, headers=self.headers, params=querystring)
+        data_norm = pd.json_normalize(response.json()["response"], 
+                                                sep="_",
+                                                record_path=["statistics"],
+                                                # meta=["team_id", "team_name", "team_logo"]
+                                    max_level=8)  
+        data_norm_framed = pd.DataFrame(data_norm)
+
+        # data_norm_framed.to_csv("save.csv")
+        return data_norm_framed
+
 
     def get_fixtures_events(self, season, league):
         url = f"{self.base_url}/fixtures/events"
-        querystring = {"season": str(season), "league": str(league)}
-        response = requests.get(url, headers=self.headers, params=querystring)
-        return response.json()
-
-
-    def get_fixtures_statistics(self, season, league):
-        url = f"{self.base_url}/fixtures/statistics"
         querystring = {"season": str(season), "league": str(league)}
         response = requests.get(url, headers=self.headers, params=querystring)
         return response.json()
