@@ -12,14 +12,14 @@ class FootballAPIClient:
             "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com"
         }
 
-    # DONE
+    #! DONE
     def get_seasons(self):
         url = f"{self.base_url}/leagues/seasons"
         response = requests.get(url, headers=self.headers)
         return response.json()['response']
 
 
-    # DONE  
+    #! DONE  
     def get_leagues(self):
         url = f"{self.base_url}/leagues"
         response = requests.get(url, headers=self.headers)
@@ -30,7 +30,7 @@ class FootballAPIClient:
         return leagues
     
 
-    # DONE : get all statistics of each fixtures
+    #! DONE : get all statistics of each fixtures
     def get_fixtures_statistics(self, fixture_id, team=None):
         url = f"{self.base_url}/fixtures/statistics"
         querystring = {"fixture": str(fixture_id)}
@@ -65,7 +65,7 @@ class FootballAPIClient:
 
 
 
-    # DONE : get all fixtures ids 
+    #! DONE : get all fixtures ids 
     def get_fixtures_ids(self, season_id, league_id):
         url = f"{self.base_url}/fixtures"
         querystring = {"season": str(season_id), "league": str(league_id)}
