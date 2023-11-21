@@ -12,13 +12,18 @@ football_api = ftb(api_key=api_key)
 # fixtures_statistics = football_api.get_fixtures_statistics("37899")
 # print("Statistiques des fixtures :", fixtures_statistics.columns)
 
-season = football_api.get_fixtures_statistics("37899")
-print(season)
+# season = football_api.get_fixtures_statistics("37899")
+
+"""
+this code to get all fixtures id by season and leagueID
+and also for each fixtures id get correspondant stats
+"""
+fixt_id = football_api.get_fixtures_ids("2021","39")
+for index, row in fixt_id.iterrows():
+    match_id = row["FixtureID"]
+    print(football_api.get_fixtures_statistics(match_id))
 
 
 # # Exemple pour obtenir les événements des fixtures
 # fixtures_events = football_api.get_fixtures_events("2022", "Premier League")
 # print("Événements des fixtures :", fixtures_events)
-
-
-# ... Ajoutez d'autres exemples selon vos besoins

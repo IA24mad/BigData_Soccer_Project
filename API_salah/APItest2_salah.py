@@ -30,7 +30,7 @@ class FootballAPIClient:
         return leagues
     
 
-    # DONE 
+    # DONE : get all statistics of each fixtures
     def get_fixtures_statistics(self, fixture_id, team=None):
         url = f"{self.base_url}/fixtures/statistics"
         querystring = {"fixture": str(fixture_id)}
@@ -60,7 +60,28 @@ class FootballAPIClient:
         data_frame = pd.DataFrame(data_list)
         # Group by 'Team' column
         grouped_data = data_frame.groupby(['TeamID','TeamName','TeamLogo'])
-        data_frame.to_csv("fixtures-statistics.csv")
+        data_frame.to_csv(f"fixtures-statistics-{fixture_id}.csv")
+        return data_frame
+
+
+
+    # DONE : get all fixtures ids 
+    def get_fixtures_ids(self, season_id, league_id):
+        url = f"{self.base_url}/fixtures"
+        querystring = {"season": str(season_id), "league": str(league_id)}
+        data_list = []
+        data = requests.get(url, headers=self.headers, params=querystring)
+
+        for fixt in data.json()['response']:
+            fixt_id = fixt['fixture']['id']
+            # Create a dictionary for the team
+            fix_data = {'FixtureID': fixt_id}
+            # Append the team dictionary to the list
+            data_list.append(fix_data)
+
+        # Create DataFrame
+        data_frame = pd.DataFrame(data_list)
+        data_frame.to_csv(f"fixtures-ids-{league_id}-{season_id}.csv")
         return data_frame
 
 
