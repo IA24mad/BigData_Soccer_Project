@@ -9,8 +9,11 @@ football_api = ftb(api_key=api_key)
 
 
 #-------------- Exemple pour obtenir les statistiques des fixtures
-fixtures_statistics = football_api.get_fixtures_statistics("37899")
-print("Statistiques des fixtures :", fixtures_statistics.columns)
+# fixtures_statistics = football_api.get_fixtures_statistics("37899")
+# print("Statistiques des fixtures :", fixtures_statistics.columns)
+
+season = football_api.get_fixtures_statistics("37899")
+print(season)
 
 
 # # Exemple pour obtenir les événements des fixtures
